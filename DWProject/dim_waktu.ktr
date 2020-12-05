@@ -428,15 +428,15 @@
     <created_user>-</created_user>
     <created_date>2020/12/02 13:36:39.481</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2020/12/02 14:59:20.258</modified_date>
-    <key_for_session_key/>
+    <modified_date>2020/12/05 20:46:36.865</modified_date>
+    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
     <name>RawatInapDW</name>
-    <server>localhost</server>
+    <server>127.0.0.1</server>
     <type>MYSQL</type>
     <access>Native</access>
     <database>rawatinapdw</database>
@@ -521,118 +521,6 @@
       <enabled>Y</enabled>
     </hop>
   </order>
-  <step>
-    <name>Generate rows start date</name>
-    <type>RowGenerator</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>start_date</name>
-        <type>Date</type>
-        <format>yyyy/MM/dd</format>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>2008/05/01</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <limit>4270</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>128</xloc>
-      <yloc>144</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Day in dimension</name>
-    <type>Sequence</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <valuename>day_in_dimension</valuename>
-    <use_database>N</use_database>
-    <connection/>
-    <schema/>
-    <seqname>SEQ_</seqname>
-    <use_counter>Y</use_counter>
-    <counter_name>DayinDimension</counter_name>
-    <start_at>1</start_at>
-    <increment_by>1</increment_by>
-    <max_value>999999999</max_value>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>352</xloc>
-      <yloc>144</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Set Data in Dimension</name>
-    <type>Formula</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <formula>
-      <field_name>Date</field_name>
-      <formula_string>date(year([start_date]);month([start_date]);day([start_date])+[day_in_dimension]-1)</formula_string>
-      <value_type>Date</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <replace_field/>
-    </formula>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>512</xloc>
-      <yloc>144</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
   <step>
     <name>Calculator</name>
     <type>Calculator</type>
@@ -750,6 +638,85 @@
     </GUI>
   </step>
   <step>
+    <name>Day in dimension</name>
+    <type>Sequence</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <valuename>day_in_dimension</valuename>
+    <use_database>N</use_database>
+    <connection/>
+    <schema/>
+    <seqname>SEQ_</seqname>
+    <use_counter>Y</use_counter>
+    <counter_name>DayinDimension</counter_name>
+    <start_at>1</start_at>
+    <increment_by>1</increment_by>
+    <max_value>999999999</max_value>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate rows start date</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>start_date</name>
+        <type>Date</type>
+        <format>yyyy/MM/dd</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>2008/05/01</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+    </fields>
+    <limit>4270</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms>5000</interval_in_ms>
+    <row_time_field>now</row_time_field>
+    <last_time_field>FiveSecondsAgo</last_time_field>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Modified JavaScript value</name>
     <type>ScriptValueMod</type>
     <description/>
@@ -810,66 +777,6 @@ var MonthName = month_names[MonthNumber];</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>Date</name>
-        <rename/>
-      </field>
-      <field>
-        <name>DayNbWeek</name>
-        <rename/>
-      </field>
-      <field>
-        <name>DayNbMonth</name>
-        <rename/>
-      </field>
-      <field>
-        <name>DayNbYear</name>
-        <rename/>
-      </field>
-      <field>
-        <name>MonthNumber</name>
-        <rename/>
-      </field>
-      <field>
-        <name>MonthName</name>
-        <rename/>
-      </field>
-      <field>
-        <name>Year</name>
-        <rename/>
-      </field>
-      <field>
-        <name>Quarter</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>128</xloc>
-      <yloc>272</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>Output ke dim_waktu</name>
     <type>TableOutput</type>
     <description/>
@@ -910,6 +817,91 @@ var MonthName = month_names[MonthNumber];</jsScript_script>
     <GUI>
       <xloc>128</xloc>
       <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>Date</name>
+      </field>
+      <field>
+        <name>DayNbWeek</name>
+      </field>
+      <field>
+        <name>DayNbMonth</name>
+      </field>
+      <field>
+        <name>DayNbYear</name>
+      </field>
+      <field>
+        <name>MonthNumber</name>
+      </field>
+      <field>
+        <name>MonthName</name>
+      </field>
+      <field>
+        <name>Year</name>
+      </field>
+      <field>
+        <name>Quarter</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>128</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Set Data in Dimension</name>
+    <type>Formula</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <formula>
+      <field_name>Date</field_name>
+      <formula_string>date(year([start_date]);month([start_date]);day([start_date])+[day_in_dimension]-1)</formula_string>
+      <value_type>Date</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field/>
+    </formula>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>512</xloc>
+      <yloc>144</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

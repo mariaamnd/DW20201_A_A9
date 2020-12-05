@@ -429,7 +429,7 @@
     <created_user>-</created_user>
     <created_date>2020/12/04 15:15:30.374</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2020/12/04 16:09:51.219</modified_date>
+    <modified_date>2020/12/05 20:46:32.294</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -582,6 +582,53 @@
       <enabled>Y</enabled>
     </hop>
   </order>
+  <step>
+    <name>Load to Dim</name>
+    <type>CombinationLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <schema>rawatinapdw</schema>
+    <table>dim_patient</table>
+    <connection>RawatInapDW</connection>
+    <commit>100</commit>
+    <cache_size>9999</cache_size>
+    <replace>N</replace>
+    <preloadCache>N</preloadCache>
+    <crc>N</crc>
+    <crcfield>hashcode</crcfield>
+    <fields>
+      <key>
+        <name>patient_ssn</name>
+        <lookup>patient_ssn</lookup>
+      </key>
+      <return>
+        <name>code_patient</name>
+        <creation_method>autoinc</creation_method>
+        <use_autoinc>Y</use_autoinc>
+      </return>
+    </fields>
+    <sequence/>
+    <last_update_field/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>688</xloc>
+      <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Lookup Area</name>
     <type>DBLookup</type>
@@ -922,6 +969,66 @@ if(isFromAboard == "Y") {
     </GUI>
   </step>
   <step>
+    <name>Select for Dim</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>patient_ssn</name>
+      </field>
+      <field>
+        <name>name</name>
+      </field>
+      <field>
+        <name>address</name>
+      </field>
+      <field>
+        <name>gender</name>
+      </field>
+      <field>
+        <name>patient_age</name>
+      </field>
+      <field>
+        <name>category_age</name>
+      </field>
+      <field>
+        <name>sub_category_job</name>
+      </field>
+      <field>
+        <name>major_category_job</name>
+        <rename>major_job</rename>
+      </field>
+      <field>
+        <name>fromSingapore</name>
+        <rename>from_singapore</rename>
+      </field>
+      <field>
+        <name>code_area</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>688</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Select values</name>
     <type>SelectValues</type>
     <description/>
@@ -967,7 +1074,6 @@ if(isFromAboard == "Y") {
       </field>
       <field>
         <name>code_area</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -982,121 +1088,6 @@ if(isFromAboard == "Y") {
     <GUI>
       <xloc>352</xloc>
       <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select for Dim</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <name>patient_ssn</name>
-        <rename/>
-      </field>
-      <field>
-        <name>name</name>
-        <rename/>
-      </field>
-      <field>
-        <name>address</name>
-        <rename/>
-      </field>
-      <field>
-        <name>gender</name>
-        <rename/>
-      </field>
-      <field>
-        <name>patient_age</name>
-        <rename/>
-      </field>
-      <field>
-        <name>category_age</name>
-        <rename/>
-      </field>
-      <field>
-        <name>sub_category_job</name>
-        <rename/>
-      </field>
-      <field>
-        <name>major_category_job</name>
-        <rename>major_job</rename>
-      </field>
-      <field>
-        <name>fromSingapore</name>
-        <rename>from_singapore</rename>
-      </field>
-      <field>
-        <name>code_area</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>688</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Load to Dim</name>
-    <type>CombinationLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <schema>rawatinapdw</schema>
-    <table>dim_patient</table>
-    <connection>RawatInapDW</connection>
-    <commit>100</commit>
-    <cache_size>9999</cache_size>
-    <replace>N</replace>
-    <preloadCache>N</preloadCache>
-    <crc>N</crc>
-    <crcfield>hashcode</crcfield>
-    <fields>
-      <key>
-        <name>patient_ssn</name>
-        <lookup>patient_ssn</lookup>
-      </key>
-      <return>
-        <name>code_patient</name>
-        <creation_method>autoinc</creation_method>
-        <use_autoinc>Y</use_autoinc>
-      </return>
-    </fields>
-    <sequence/>
-    <last_update_field/>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>688</xloc>
-      <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
