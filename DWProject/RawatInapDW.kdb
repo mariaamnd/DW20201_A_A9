@@ -1,6 +1,6 @@
   <connection>
     <name>RawatInapDW</name>
-    <server>localhost</server>
+    <server>127.0.0.1</server>
     <type>MYSQL</type>
     <access>Native</access>
     <database>rawatinapdw</database>
