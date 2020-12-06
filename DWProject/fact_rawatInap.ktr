@@ -428,7 +428,7 @@
     <created_user>-</created_user>
     <created_date>2020/12/06 13:44:19.006</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2020/12/06 21:04:54.580</modified_date>
+    <modified_date>2020/12/06 21:02:03.835</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -546,16 +546,6 @@
   </connection>
   <order>
     <hop>
-      <from>Input Stay</from>
-      <to>Group by</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Group by</from>
-      <to>Lookup undergoes</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Lookup undergoes</from>
       <to>lookup procedure</to>
       <enabled>Y</enabled>
@@ -595,7 +585,55 @@
       <to>Select values</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>Input Stay</from>
+      <to>Modified jumlahStay</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Modified jumlahStay</from>
+      <to>Lookup undergoes</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Load Fact</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
+  <step>
+    <name>Formula</name>
+    <type>Formula</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <formula>
+      <field_name>totalBiayaPerawatan</field_name>
+      <formula_string>[procedureCost] + ([jumlahStay] * [roomCostPerDay])</formula_string>
+      <value_type>Number</value_type>
+      <value_length>-1</value_length>
+      <value_precision>-1</value_precision>
+      <replace_field/>
+    </formula>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Input Stay</name>
     <type>TableInput</type>
@@ -748,53 +786,7 @@ FROM hospital.stay
       </output>
     </remotesteps>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Group by</name>
-    <type>GroupBy</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <all_rows>Y</all_rows>
-    <ignore_aggregate>N</ignore_aggregate>
-    <field_ignore/>
-    <directory>%%java.io.tmpdir%%</directory>
-    <prefix>grp</prefix>
-    <add_linenr>N</add_linenr>
-    <linenr_fieldname/>
-    <give_back_row>N</give_back_row>
-    <group>
-      <field>
-        <name>Patient</name>
-      </field>
-    </group>
-    <fields>
-      <field>
-        <aggregate>jumlahStay</aggregate>
-        <subject>StayID</subject>
-        <type>COUNT_DISTINCT</type>
-        <valuefield/>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>224</xloc>
+      <xloc>32</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
@@ -850,6 +842,160 @@ FROM hospital.stay
     <GUI>
       <xloc>336</xloc>
       <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>codePatient</name>
+      </field>
+      <field>
+        <name>codePhysician</name>
+      </field>
+      <field>
+        <name>codeProcedure</name>
+      </field>
+      <field>
+        <name>codeRoom</name>
+      </field>
+      <field>
+        <name>startDate</name>
+      </field>
+      <field>
+        <name>endDate</name>
+      </field>
+      <field>
+        <name>procedureCost</name>
+      </field>
+      <field>
+        <name>roomCostPerDay</name>
+      </field>
+      <field>
+        <name>jumlahStay</name>
+      </field>
+      <field>
+        <name>totalBiayaPerawatan</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>lookup patient</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>RawatInapDW</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema>rawatinapdw</schema>
+      <table>dim_patient</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>Patient</name>
+        <field>patient_ssn</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>code_patient</name>
+        <rename>codePatient</rename>
+        <default/>
+        <type>BigNumber</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>480</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>lookup physician</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>RawatInapDW</connection>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <lookup>
+      <schema/>
+      <table>dim_physician</table>
+      <orderby/>
+      <fail_on_multiple>N</fail_on_multiple>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <key>
+        <name>Physician</name>
+        <field>EmployeeID</field>
+        <condition>=</condition>
+        <name2/>
+      </key>
+      <value>
+        <name>code_physician</name>
+        <rename>codePhysician</rename>
+        <default/>
+        <type>BigNumber</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -978,39 +1124,6 @@ FROM hospital.stay
     </GUI>
   </step>
   <step>
-    <name>Formula</name>
-    <type>Formula</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <formula>
-      <field_name>totalBiayaPerawatan</field_name>
-      <formula_string>[procedureCost] + ([jumlahStay] * [roomCostPerDay])</formula_string>
-      <value_type>Number</value_type>
-      <value_length>-1</value_length>
-      <value_precision>-1</value_precision>
-      <replace_field/>
-    </formula>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>480</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>lookup start date</name>
     <type>DBLookup</type>
     <description/>
@@ -1107,8 +1220,8 @@ FROM hospital.stay
     </GUI>
   </step>
   <step>
-    <name>lookup patient</name>
-    <type>DBLookup</type>
+    <name>Modified jumlahStay</name>
+    <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1117,144 +1230,28 @@ FROM hospital.stay
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>RawatInapDW</connection>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema>rawatinapdw</schema>
-      <table>dim_patient</table>
-      <orderby/>
-      <fail_on_multiple>N</fail_on_multiple>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <key>
-        <name>Patient</name>
-        <field>patient_ssn</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>code_patient</name>
-        <rename>codePatient</rename>
-        <default/>
-        <type>BigNumber</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>480</xloc>
-      <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>lookup physician</name>
-    <type>DBLookup</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>RawatInapDW</connection>
-    <cache>N</cache>
-    <cache_load_all>N</cache_load_all>
-    <cache_size>0</cache_size>
-    <lookup>
-      <schema/>
-      <table>dim_physician</table>
-      <orderby/>
-      <fail_on_multiple>N</fail_on_multiple>
-      <eat_row_on_failure>N</eat_row_on_failure>
-      <key>
-        <name>Physician</name>
-        <field>EmployeeID</field>
-        <condition>=</condition>
-        <name2/>
-      </key>
-      <value>
-        <name>code_physician</name>
-        <rename>codePhysician</rename>
-        <default/>
-        <type>BigNumber</type>
-      </value>
-    </lookup>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Select values</name>
-    <type>SelectValues</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+    
+  	var jumlahStay = (dateDiff(StayStart,StayEnd,"d"));
+	</jsScript_script>
+      </jsScript>
+    </jsScripts>
     <fields>
       <field>
-        <name>codePatient</name>
-        <rename/>
-      </field>
-      <field>
-        <name>codePhysician</name>
-        <rename/>
-      </field>
-      <field>
-        <name>codeProcedure</name>
-        <rename/>
-      </field>
-      <field>
-        <name>codeRoom</name>
-        <rename/>
-      </field>
-      <field>
-        <name>startDate</name>
-        <rename/>
-      </field>
-      <field>
-        <name>endDate</name>
-        <rename/>
-      </field>
-      <field>
-        <name>procedureCost</name>
-        <rename/>
-      </field>
-      <field>
-        <name>roomCostPerDay</name>
-        <rename/>
-      </field>
-      <field>
         <name>jumlahStay</name>
-        <rename/>
+        <rename>jumlahStay</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
       </field>
-      <field>
-        <name>totalBiayaPerawatan</name>
-        <rename/>
-      </field>
-      <select_unspecified>N</select_unspecified>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1265,8 +1262,92 @@ FROM hospital.stay
       </output>
     </remotesteps>
     <GUI>
-      <xloc>768</xloc>
-      <yloc>288</yloc>
+      <xloc>192</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Load Fact</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>RawatInapDW</connection>
+    <schema>rawatinapdw</schema>
+    <table>fact_rawatinap</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>StayID</return_field>
+    <fields>
+      <field>
+        <column_name>codePatient</column_name>
+        <stream_name>codePatient</stream_name>
+      </field>
+      <field>
+        <column_name>codePhysician</column_name>
+        <stream_name>codePhysician</stream_name>
+      </field>
+      <field>
+        <column_name>codeProcedure</column_name>
+        <stream_name>codeProcedure</stream_name>
+      </field>
+      <field>
+        <column_name>codeRoom</column_name>
+        <stream_name>codeRoom</stream_name>
+      </field>
+      <field>
+        <column_name>startDate</column_name>
+        <stream_name>startDate</stream_name>
+      </field>
+      <field>
+        <column_name>endDate</column_name>
+        <stream_name>endDate</stream_name>
+      </field>
+      <field>
+        <column_name>procedureCost</column_name>
+        <stream_name>procedureCost</stream_name>
+      </field>
+      <field>
+        <column_name>roomCostPerDay</column_name>
+        <stream_name>roomCostPerDay</stream_name>
+      </field>
+      <field>
+        <column_name>jumlahStay</column_name>
+        <stream_name>jumlahStay</stream_name>
+      </field>
+      <field>
+        <column_name>totalBiayaPerawatan</column_name>
+        <stream_name>totalBiayaPerawatan</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>752</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
