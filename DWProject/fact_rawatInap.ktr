@@ -428,7 +428,7 @@
     <created_user>-</created_user>
     <created_date>2020/12/06 13:44:19.006</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2020/12/06 21:02:03.835</modified_date>
+    <modified_date>2020/12/07 00:03:08.463</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -792,6 +792,90 @@ FROM hospital.stay
     </GUI>
   </step>
   <step>
+    <name>Load Fact</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>RawatInapDW</connection>
+    <schema>rawatinapdw</schema>
+    <table>fact_rawatinap</table>
+    <commit>1000</commit>
+    <truncate>N</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>N</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>Y</return_keys>
+    <return_field>StayID</return_field>
+    <fields>
+      <field>
+        <column_name>codePatient</column_name>
+        <stream_name>codePatient</stream_name>
+      </field>
+      <field>
+        <column_name>codePhysician</column_name>
+        <stream_name>codePhysician</stream_name>
+      </field>
+      <field>
+        <column_name>codeProcedure</column_name>
+        <stream_name>codeProcedure</stream_name>
+      </field>
+      <field>
+        <column_name>codeRoom</column_name>
+        <stream_name>codeRoom</stream_name>
+      </field>
+      <field>
+        <column_name>startDate</column_name>
+        <stream_name>startDate</stream_name>
+      </field>
+      <field>
+        <column_name>endDate</column_name>
+        <stream_name>endDate</stream_name>
+      </field>
+      <field>
+        <column_name>procedureCost</column_name>
+        <stream_name>procedureCost</stream_name>
+      </field>
+      <field>
+        <column_name>roomCostPerDay</column_name>
+        <stream_name>roomCostPerDay</stream_name>
+      </field>
+      <field>
+        <column_name>jumlahStay</column_name>
+        <stream_name>jumlahStay</stream_name>
+      </field>
+      <field>
+        <column_name>totalBiayaPerawatan</column_name>
+        <stream_name>totalBiayaPerawatan</stream_name>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>384</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>Lookup undergoes</name>
     <type>DBLookup</type>
     <description/>
@@ -841,6 +925,54 @@ FROM hospital.stay
     </remotesteps>
     <GUI>
       <xloc>336</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Modified jumlahStay</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+    
+  	var jumlahStay = (dateDiff(StayStart,StayEnd,"d") + 1);
+	</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>jumlahStay</name>
+        <rename>jumlahStay</rename>
+        <type>Integer</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>192</xloc>
       <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
@@ -1216,138 +1348,6 @@ FROM hospital.stay
     <GUI>
       <xloc>336</xloc>
       <yloc>288</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Modified jumlahStay</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>//Script here
-
-    
-  	var jumlahStay = (dateDiff(StayStart,StayEnd,"d"));
-	</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>jumlahStay</name>
-        <rename>jumlahStay</rename>
-        <type>Integer</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>192</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>Load Fact</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>RawatInapDW</connection>
-    <schema>rawatinapdw</schema>
-    <table>fact_rawatinap</table>
-    <commit>1000</commit>
-    <truncate>N</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>Y</return_keys>
-    <return_field>StayID</return_field>
-    <fields>
-      <field>
-        <column_name>codePatient</column_name>
-        <stream_name>codePatient</stream_name>
-      </field>
-      <field>
-        <column_name>codePhysician</column_name>
-        <stream_name>codePhysician</stream_name>
-      </field>
-      <field>
-        <column_name>codeProcedure</column_name>
-        <stream_name>codeProcedure</stream_name>
-      </field>
-      <field>
-        <column_name>codeRoom</column_name>
-        <stream_name>codeRoom</stream_name>
-      </field>
-      <field>
-        <column_name>startDate</column_name>
-        <stream_name>startDate</stream_name>
-      </field>
-      <field>
-        <column_name>endDate</column_name>
-        <stream_name>endDate</stream_name>
-      </field>
-      <field>
-        <column_name>procedureCost</column_name>
-        <stream_name>procedureCost</stream_name>
-      </field>
-      <field>
-        <column_name>roomCostPerDay</column_name>
-        <stream_name>roomCostPerDay</stream_name>
-      </field>
-      <field>
-        <column_name>jumlahStay</column_name>
-        <stream_name>jumlahStay</stream_name>
-      </field>
-      <field>
-        <column_name>totalBiayaPerawatan</column_name>
-        <stream_name>totalBiayaPerawatan</stream_name>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>752</xloc>
-      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
